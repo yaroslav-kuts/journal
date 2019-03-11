@@ -8,24 +8,10 @@ class UserController {
         };
     }
 
-    async authenticate({ request, auth }) {
-        return {
-          message: 'Authentication was successfully completed',
-          data: 'token'
-        };
-    }
-
     async store({ request }) {
         return {
           message: 'User was successfully created',
           data: 'user'
-        };
-    }
-
-    async verify({ request }) {
-        return {
-            message: 'User was verified',
-            data: {}
         };
     }
 
