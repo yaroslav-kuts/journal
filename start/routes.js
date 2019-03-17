@@ -5,14 +5,22 @@ Route.get('/', () => ({ status: 'Ok', version: '1.0.0' }));
 Route.group(() => {
   Route.post('authenticate', 'AuthController.authenticate');
 
-  Route.get('users/:id', 'UserController.get').middleware(['findUser']);
+  Route.get('users/:userId', 'UserController.get')
+    .middleware(['auth:jwt', 'findUser']);
   Route.post('users', 'UserController.store');
-  Route.patch('users/:id', 'UserController.update').middleware(['findUser']);
-  Route.delete('users/:id', 'UserController.delete').middleware(['findUser']);
+  Route.patch('users/:userId', 'UserController.update')
+    .middleware(['auth:jwt', 'findUser']);
+  Route.delete('users/:userId', 'UserController.delete')
+    .middleware(['auth:jwt', 'findUser']);
 
-  Route.get('posts/:id', 'PostController.get').middleware(['findPost']);
-  Route.get('posts', 'PostController.list');
-  Route.post('posts', 'PostController.store');
-  Route.patch('posts/:id', 'PostController.update').middleware(['findPost']);
-  Route.delete('posts/:id', 'PostController.delete').middleware(['findPost']);
+  Route.get('users/:userId/posts/:postId', 'PostController.get')
+    .middleware(['auth:jwt', 'findPost']);
+  Route.get('users/:userId/posts', 'PostController.list')
+    .middleware(['auth:jwt']);
+  Route.post('users/:userId/posts', 'PostController.store')
+    .middleware(['auth:jwt']);
+  Route.patch('users/:userId/posts/:postId', 'PostController.update')
+    .middleware(['auth:jwt', 'findPost']);
+  Route.delete('users/:userId/posts/:postId', 'PostController.delete')
+    .middleware(['auth:jwt', 'findPost']);
 }).prefix('api/v1');

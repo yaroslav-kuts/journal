@@ -2,10 +2,10 @@ const User = use('App/Models/User');
 
 class UserController {
   async get({ request }) {
-    const { user } = request;
+    const { $user } = request;
     return {
       message: 'ok',
-      data: user,
+      data: $user,
     };
   }
 
@@ -19,25 +19,25 @@ class UserController {
   }
 
   async update({ request }) {
-    const { user } = request;
+    const { $user } = request;
     const { firstname, lastname, email, verified } = request.post();
-    user.firstname = firstname;
-    user.lastname = lastname;
-    user.email = email;
-    user.verified = verified;
-    await user.save();
+    $user.firstname = firstname;
+    $user.lastname = lastname;
+    $user.email = email;
+    $user.verified = verified;
+    await $user.save();
     return {
       message: 'User was updated',
-      data: user,
+      data: $user,
     };
   }
 
   async delete({ request }) {
-    const { user } = request;
-    await user.delete();
+    const { $user } = request;
+    await $user.delete();
     return {
       message: 'User was deleted',
-      data: { id: user.id },
+      data: { id: $user.id },
     };
   }
 }

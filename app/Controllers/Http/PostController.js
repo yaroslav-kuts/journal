@@ -9,17 +9,22 @@ class PostController {
     };
   }
 
-  async list() {
-    const posts = await Post.all();
+  async list({ params: { userId } }) {
+    const posts = await Post.query()
+      .where({ user_id: userId })
+      .fetch();
     return {
       message: 'ok',
       data: posts,
     };
   }
 
-  async store({ request }) {
-    const body = request.post();
-    const post = await Post.create(body);
+  async store({ request, params: { userId } }) {
+    const { text } = request.post();
+    const post = await Post.create({
+      text,
+      user_id: userId,
+    });
     return {
       message: 'Post was created',
       data: post,
@@ -30,6 +35,7 @@ class PostController {
     const { $post } = request;
     const { text } = request.post();
     $post.text = text;
+    await $post.save();
     return {
       message: 'Post was updated',
       data: $post,
